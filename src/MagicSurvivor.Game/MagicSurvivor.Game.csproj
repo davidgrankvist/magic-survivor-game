@@ -14,7 +14,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Model\" />
+    <Content Include="..\..\config\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>config\%(FileName)%(Extension)</TargetPath>
+    </Content>
+    <Content Include="..\..\config\levels\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>config\levels\%(FileName)%(Extension)</TargetPath>
+    </Content>
   </ItemGroup>
 
 </Project>

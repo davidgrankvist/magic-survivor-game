@@ -13,4 +13,9 @@ public class StaticRepository<TObject>
     {
         objects.Add(obj);
     }
+
+    public void Clear()
+    {
+        objects.Clear();
+    }
 }

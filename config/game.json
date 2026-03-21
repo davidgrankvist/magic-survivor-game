@@ -1,0 +1,30 @@
+{
+    "Camera": {
+        "FovY": 45.0,
+        "OffsetFromTarget": {
+            "X": 0,
+            "Y": 10,
+            "Z": 10
+        }
+    },
+    "EntityDefinitions": [
+        {
+            "Type": "ENTITY_TYPE_PLAYER",
+            "Speed": 100,
+            "Collider": {
+                "X": 2,
+                "Y": 2,
+                "Z": 2
+            }
+        },
+        {
+            "Type": "ENTITY_TYPE_SAMPLE_ENEMY",
+            "Speed": 50,
+            "Collider": {
+                "X": 2,
+                "Y": 2,
+                "Z": 2
+            }
+        }
+    ]
+}

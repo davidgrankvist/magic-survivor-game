@@ -1,9 +1,18 @@
+using System.Collections;
+
 namespace MagicSurvivor.Game.State.Collections;
 
-public class EntityRepository
+public class EntityRepository : IEnumerable<Entity>
 {
     private List<EntitySlot> slots = [];
     private List<int> freeIndices = [];
+
+    public int Count => slots.Count;
+    
+    public Entity this[int i]
+    {
+        get => slots[i].Entity;
+    }
 
     public Entity? GetEntity(EntityHandle handle)
     {
@@ -14,6 +23,11 @@ public class EntityRepository
 
         var slot = slots[handle.Index];
         if (slot.Generation != handle.Generation)
+        {
+            return null;
+        }
+
+        if (slot.Entity.IsDeleted)
         {
             return null;
         }
@@ -55,14 +69,30 @@ public class EntityRepository
         }
 
         slot.Generation++;
-        slot.Entity = null!;
+        slot.Entity.IsDeleted = true;
 
         freeIndices.Add(handle.Index);
     }
 
+    public void Clear()
+    {
+        slots.Clear();
+        freeIndices.Clear();
+    }
+
+    public IEnumerator<Entity> GetEnumerator()
+    {
+        return slots.Select(s => s.Entity).GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
     private class EntitySlot
     {
-        public Entity Entity = null!;
+        public Entity Entity = new();
         public int Generation;
     }
 }

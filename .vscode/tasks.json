@@ -1,0 +1,30 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Game: Build game",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--no-restore",
+				"${cwd}/src/magic-survivor-game.sln"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": [],
+		},
+		{
+			"label": "Game: Restore game",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"restore",
+				"${cwd}/src/magic-survivor-game.sln"
+			],
+			"problemMatcher": [],
+		}
+	]
+}

@@ -48,7 +48,7 @@ public class GraphicsSystem : ISystem
         var collider = definition.Collider;
         var position = entity.Position;
 
-        var color = entity.DefinitionHandle.Index > 0 ? Color.DarkGreen : Color.Blue;
+        var color = entity.DefinitionHandle.Index == state.PlayerEntityDefinitionHandle.Index ? Color.Blue : Color.DarkGreen;
         Raylib.DrawCube(position, collider.X, collider.Y, collider.Z, color);
         Raylib.DrawCubeWires(position, collider.X, collider.Y, collider.Z, Color.Black);
     }

@@ -13,6 +13,7 @@ public static class SystemRegistry
         ISystem[] systems = [
             new ConfigLoadSystem(configLoader),
             new InputSystem(),
+            new PhysicsSystem(),
             new GraphicsSystem(),
         ];
         return systems;

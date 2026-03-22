@@ -3,14 +3,14 @@
         "FovY": 45.0,
         "OffsetFromTarget": {
             "X": 0,
-            "Y": 10,
-            "Z": 10
+            "Y": 30,
+            "Z": 20
         }
     },
     "EntityDefinitions": [
         {
             "Type": "ENTITY_TYPE_PLAYER",
-            "Speed": 100,
+            "Speed": 20,
             "Collider": {
                 "X": 2,
                 "Y": 2,

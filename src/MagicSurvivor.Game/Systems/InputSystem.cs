@@ -1,6 +1,7 @@
 using Raylib_cs;
 using MagicSurvivor.Game.State;
 using MagicSurvivor.Game.Infrastructure;
+using System.Numerics;
 
 namespace MagicSurvivor.Game.Systems;
 
@@ -12,6 +13,8 @@ public class InputSystem : ISystem
         {
             ReadEditorInput(state);
         }
+
+        ReadCharacterControls(state);
     }
 
     private void ReadEditorInput(GameState state)
@@ -32,5 +35,33 @@ public class InputSystem : ISystem
                 state.Level.ShouldLoadLevel = true;
             }
         }
+    }
+
+    private void ReadCharacterControls(GameState state)
+    {
+        var entityDefinition = state.EntityDefinitions.Get(state.PlayerEntityDefinitionHandle);
+        var entity = state.Entities.GetEntity(state.PlayerEntityHandle)!;
+        var speed = entityDefinition.Speed;
+        var velocity = new Vector3(0, 0, 0);
+
+        // WASD movement on XZ plane.
+        if (Raylib.IsKeyDown(KeyboardKey.A))
+        {
+            velocity.X = -speed;
+        }
+        if (Raylib.IsKeyDown(KeyboardKey.D))
+        {
+            velocity.X = speed;
+        }
+        if (Raylib.IsKeyDown(KeyboardKey.W))
+        {
+            velocity.Z = -speed;
+        }
+        if (Raylib.IsKeyDown(KeyboardKey.S))
+        {
+            velocity.Z = speed;
+        }
+
+        entity.Velocity = velocity;
     }
 }

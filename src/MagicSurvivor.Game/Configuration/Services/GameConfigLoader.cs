@@ -10,6 +10,7 @@ public class GameConfigLoader
     }
     private readonly GameConfigFileService configFileService;
     private readonly Dictionary<string, int> stringIdToIndexMap = [];
+    private const string PlayerEntityType = "ENTITY_TYPE_PLAYER";
     
     public void LoadGameConfig(GameState state)
     {
@@ -18,6 +19,11 @@ public class GameConfigLoader
         var gameConfig = configFileService.ReadGameConfig();
         LoadCameraConfig(state.Camera, gameConfig.Camera);
         LoadEntityDefinitions(state, gameConfig.EntityDefinitions);
+
+        state.PlayerEntityDefinitionHandle = new StaticHandle
+        {
+            Index = stringIdToIndexMap[PlayerEntityType],
+        };
     }
 
     public void LoadLevel(GameState state, string levelId)
@@ -26,6 +32,12 @@ public class GameConfigLoader
 
         var levelConfig = configFileService.ReadLevelConfig(levelId);
         LoadEntitites(state, levelConfig.Entities);
+
+        state.PlayerEntityHandle = new EntityHandle
+        {
+            Index = stringIdToIndexMap[PlayerEntityType],
+            Generation = 0,
+        };
     }
 
     private void LoadEntitites(GameState state, List<EntityConfig> entities)

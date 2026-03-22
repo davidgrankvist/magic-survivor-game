@@ -27,7 +27,8 @@ internal class Program
         configLoader.LoadLevel(state, state.Level.CurrentLevelId);
 
         Raylib.SetTargetFPS(fps);
-        Raylib.InitWindow(800, 480, "Magic Survivor");
+        // CreateSizedWindow(800, 400);
+        CreateFullscreenWindow();
 
         while (!Raylib.WindowShouldClose())
         {
@@ -38,5 +39,31 @@ internal class Program
         }
 
         Raylib.CloseWindow();
+    }
+
+    private static void CreateSizedWindow(int w, int h)
+    {
+        CreateDummyWindow();
+        Raylib.SetConfigFlags(ConfigFlags.ResizableWindow);
+        Raylib.InitWindow(w, h, "Magic Survivor");
+    }
+
+    private static void CreateFullscreenWindow()
+    {
+        CreateDummyWindow();
+        Raylib.SetConfigFlags(ConfigFlags.UndecoratedWindow);
+        Raylib.InitWindow(Raylib.GetScreenWidth(), Raylib.GetScreenHeight(), "Magic Survivor");
+    }
+
+    /// <summary>
+    /// This is a workaround to prepare the window related API calls. Before first window creation calls like GetScreenWidth return 0.
+    /// There may also be additional re-positioning of smaller windows as the screen center is not known yet.
+    /// </summary>
+    private static void CreateDummyWindow()
+    {
+        Raylib.SetConfigFlags(ConfigFlags.HiddenWindow);
+        Raylib.InitWindow(0, 0, "Dummy window");
+        Raylib.CloseWindow();
+        Raylib.ClearWindowState(ConfigFlags.HiddenWindow);
     }
 }

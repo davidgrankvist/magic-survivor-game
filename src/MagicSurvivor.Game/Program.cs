@@ -44,14 +44,14 @@ internal class Program
     private static void CreateSizedWindow(int w, int h)
     {
         CreateDummyWindow();
-        Raylib.SetConfigFlags(ConfigFlags.ResizableWindow);
+        Raylib.SetConfigFlags(ConfigFlags.VSyncHint | ConfigFlags.ResizableWindow);
         Raylib.InitWindow(w, h, "Magic Survivor");
     }
 
     private static void CreateFullscreenWindow()
     {
         CreateDummyWindow();
-        Raylib.SetConfigFlags(ConfigFlags.UndecoratedWindow);
+        Raylib.SetConfigFlags(ConfigFlags.VSyncHint | ConfigFlags.UndecoratedWindow);
         Raylib.InitWindow(Raylib.GetScreenWidth(), Raylib.GetScreenHeight(), "Magic Survivor");
     }
 

@@ -1,7 +1,7 @@
 {
     "Entities": [
         {
-            "Type": "ENTITY_TYPE_PLAYER",
+            "Type": "Player",
             "Position": {
                 "X": 0,
                 "Y": 0,
@@ -9,9 +9,9 @@
             }
         },
         {
-            "Type": "ENTITY_TYPE_ZOMBIE",
+            "Type": "Zombie",
             "Position": {
-                "X": 5,
+                "X": 50,
                 "Y": 0,
                 "Z": 0
             }

@@ -9,20 +9,26 @@ public class GameConfigLoader
         configFileService = new(loadFromSourceDir);
     }
     private readonly GameConfigFileService configFileService;
-    private readonly Dictionary<string, int> stringIdToIndexMap = [];
-    private const string PlayerEntityType = "ENTITY_TYPE_PLAYER";
-    
+    private readonly Dictionary<string, int> entityTypeStringToIndexMap = [];
+    private const string PlayerEntityType = "Player";
+
     public void LoadGameConfig(GameState state)
     {
-        stringIdToIndexMap.Clear();
+        entityTypeStringToIndexMap.Clear();
 
         var gameConfig = configFileService.ReadGameConfig();
         LoadCameraConfig(state.Camera, gameConfig.Camera);
         LoadEntityDefinitions(state, gameConfig.EntityDefinitions);
+        LoadSpells(state, gameConfig.Spells);
 
         state.PlayerEntityDefinitionHandle = new StaticHandle
         {
-            Index = stringIdToIndexMap[PlayerEntityType],
+            Index = entityTypeStringToIndexMap[PlayerEntityType],
+        };
+
+        state.SpellState.SelectedSpell = new StaticHandle
+        {
+            Index = 0,
         };
     }
 
@@ -35,7 +41,7 @@ public class GameConfigLoader
 
         state.PlayerEntityHandle = new EntityHandle
         {
-            Index = stringIdToIndexMap[PlayerEntityType],
+            Index = entityTypeStringToIndexMap[PlayerEntityType],
             Generation = 0,
         };
     }
@@ -48,7 +54,7 @@ public class GameConfigLoader
             var ec = entities[i];
             var definitionHandle = new StaticHandle
             {
-                Index = stringIdToIndexMap[ec.Type],
+                Index = entityTypeStringToIndexMap[ec.Type],
             };
             var entity = new Entity
             {
@@ -76,14 +82,37 @@ public class GameConfigLoader
         for (var i = 0; i < entityDefinitionConfigs.Count; i++)
         {
             var edc = entityDefinitionConfigs[i];
-            stringIdToIndexMap[edc.Type] = i;
-            
+            entityTypeStringToIndexMap[edc.Type] = i;
+
             var ed = new EntityDefinition
             {
+                Category = Enum.Parse<EntityCategory>(edc.Category),
                 Speed = edc.Speed,
                 Collider = edc.Collider,
             };
             state.EntityDefinitions.Add(ed);
+        }
+    }
+
+    private void LoadSpells(GameState state, List<SpellConfig> spells)
+    {
+        state.Spells.Clear();
+
+        for (var i = 0; i < spells.Count; i++)
+        {
+            var sc = spells[i];
+
+            var definitionHandle = new StaticHandle
+            {
+                Index = entityTypeStringToIndexMap[sc.SpawnEntity],
+            };
+            var spell = new Spell
+            {
+                SpawnEntity = definitionHandle,
+                Cooldown = sc.Cooldown,
+                Elapsed = sc.Cooldown + 1,
+            };
+            state.Spells.Add(spell);
         }
     }
 }

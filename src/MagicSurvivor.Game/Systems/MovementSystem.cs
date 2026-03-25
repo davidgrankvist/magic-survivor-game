@@ -18,14 +18,14 @@ public class MovementSystem : ISystem
                 continue;
             }
 
-            // The player velocity is updated in the input system.
-            if (entity.Handle == state.PlayerEntityHandle)
+            var entityDefinition = state.EntityDefinitions.Get(entity.DefinitionHandle);
+
+            if (entityDefinition.Category != EntityCategory.Npc)
             {
                 continue;
             }
 
             // Follow player.
-            var entityDefinition = state.EntityDefinitions.Get(entity.DefinitionHandle);
             var target = playerPosition;
             var direction = Vector3.Normalize(target - entity.Position);
             var velocity = direction * entityDefinition.Speed;

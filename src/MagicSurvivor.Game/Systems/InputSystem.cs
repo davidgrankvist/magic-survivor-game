@@ -39,6 +39,12 @@ public class InputSystem : ISystem
 
     private void ReadCharacterControls(GameState state)
     {
+        ReadMovementControls(state);
+        ReadSpellControls(state);
+    }
+
+    private void ReadMovementControls(GameState state)
+    {
         var entityDefinition = state.EntityDefinitions.Get(state.PlayerEntityDefinitionHandle);
         var entity = state.Entities.GetEntity(state.PlayerEntityHandle)!;
         var speed = entityDefinition.Speed;
@@ -63,5 +69,13 @@ public class InputSystem : ISystem
         }
 
         entity.Velocity = velocity;
+    }
+
+    private void ReadSpellControls(GameState state)
+    {
+        if (Raylib.IsMouseButtonDown(MouseButton.Left))
+        {
+            state.SpellState.ShouldAttemptCast = true;
+        }
     }
 }

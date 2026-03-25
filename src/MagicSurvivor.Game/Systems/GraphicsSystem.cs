@@ -58,18 +58,36 @@ public class GraphicsSystem : ISystem
         var collider = definition.Collider;
         var position = entity.Position;
 
-        var color = entity.DefinitionHandle == state.PlayerEntityDefinitionHandle ? Color.Blue : Color.DarkGreen;
+        var color = GetEntityColor(definition.Category);
         Raylib.DrawCube(position, collider.X, collider.Y, collider.Z, color);
         Raylib.DrawCubeWires(position, collider.X, collider.Y, collider.Z, Color.Black);
+    }
+
+    private Color GetEntityColor(EntityCategory entityCategory)
+    {
+        switch (entityCategory)
+        {
+            case EntityCategory.Player:
+                return Color.Blue;
+            case EntityCategory.Npc:
+                return Color.DarkGreen;
+            case EntityCategory.Projectile:
+                return Color.Orange;
+            default:
+                return Color.Black;
+        }
     }
 
     private void DrawUi(GameState state)
     {
         if (state.Editor.IsEnabled)
         {
-            Raylib.DrawText("Editor commands:", 0, 0, 16, Color.Green);
-            Raylib.DrawText("G - Reload game config", 0, 16, 16, Color.Green);
-            Raylib.DrawText("L - Reload level", 0, 32, 16, Color.Green);
+            var fontSize = 16;
+            var padding = 5;
+            Raylib.DrawFPS(padding, 0);
+            Raylib.DrawText("Editor commands:", padding, 32, fontSize, Color.Green);
+            Raylib.DrawText("G - Reload game config", padding, 32 + fontSize, fontSize, Color.Green);
+            Raylib.DrawText("L - Reload level", padding, 32 + fontSize * 2, fontSize, Color.Green);
         }
     }
 }

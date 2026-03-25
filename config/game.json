@@ -3,28 +3,47 @@
         "FovY": 45.0,
         "OffsetFromTarget": {
             "X": 0,
-            "Y": 30,
-            "Z": 20
+            "Y": 80,
+            "Z": 60
         }
     },
     "EntityDefinitions": [
         {
-            "Type": "ENTITY_TYPE_PLAYER",
+            "Type": "Player",
+            "Category": "Player",
             "Speed": 20,
             "Collider": {
-                "X": 2,
-                "Y": 2,
-                "Z": 2
+                "X": 5,
+                "Y": 5,
+                "Z": 5
             }
         },
         {
-            "Type": "ENTITY_TYPE_ZOMBIE",
+            "Type": "Zombie",
+            "Category": "Npc",
             "Speed": 5,
+            "Collider": {
+                "X": 5,
+                "Y": 5,
+                "Z": 5
+            }
+        },
+        {
+            "Type": "Fireball",
+            "Category": "Projectile",
+            "Speed": 40,
             "Collider": {
                 "X": 2,
                 "Y": 2,
                 "Z": 2
             }
+        }
+    ],
+    "Spells": [
+        {
+            "Type": "Fireball",
+            "SpawnEntity": "Fireball",
+            "Cooldown": 0.5
         }
     ]
 }

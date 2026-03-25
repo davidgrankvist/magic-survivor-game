@@ -18,8 +18,8 @@
             }
         },
         {
-            "Type": "ENTITY_TYPE_SAMPLE_ENEMY",
-            "Speed": 50,
+            "Type": "ENTITY_TYPE_ZOMBIE",
+            "Speed": 5,
             "Collider": {
                 "X": 2,
                 "Y": 2,

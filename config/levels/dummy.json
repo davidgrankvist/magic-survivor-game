@@ -9,7 +9,7 @@
             }
         },
         {
-            "Type": "ENTITY_TYPE_SAMPLE_ENEMY",
+            "Type": "ENTITY_TYPE_ZOMBIE",
             "Position": {
                 "X": 5,
                 "Y": 0,

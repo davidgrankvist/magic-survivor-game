@@ -8,6 +8,8 @@ public class GraphicsSystem : ISystem
 {
     public void Update(GameState state, float deltaTime)
     {
+        // UpdateCameraFollowPlayer(state);
+
         Raylib.BeginDrawing();
         Raylib.ClearBackground(Color.White);
 
@@ -20,6 +22,14 @@ public class GraphicsSystem : ISystem
         DrawUi(state);
 
         Raylib.EndDrawing();
+    }
+
+    // TODO: follows, but is blurry. add some dead zone mechanism probably?
+    private void UpdateCameraFollowPlayer(GameState state)
+    {
+        var entity = state.Entities.GetEntity(state.PlayerEntityHandle)!;
+        state.Camera.RayCamera.Target = entity.Position;
+        state.Camera.RayCamera.Position = entity.Position + state.Camera.OffsetFromTarget;
     }
 
     private void DrawScene(GameState state)
@@ -48,7 +58,7 @@ public class GraphicsSystem : ISystem
         var collider = definition.Collider;
         var position = entity.Position;
 
-        var color = entity.DefinitionHandle.Index == state.PlayerEntityDefinitionHandle.Index ? Color.Blue : Color.DarkGreen;
+        var color = entity.DefinitionHandle == state.PlayerEntityDefinitionHandle ? Color.Blue : Color.DarkGreen;
         Raylib.DrawCube(position, collider.X, collider.Y, collider.Z, color);
         Raylib.DrawCubeWires(position, collider.X, collider.Y, collider.Z, Color.Black);
     }

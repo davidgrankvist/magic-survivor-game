@@ -73,9 +73,25 @@ public class InputSystem : ISystem
 
     private void ReadSpellControls(GameState state)
     {
+        ReadAimControls(state);
+
         if (Raylib.IsMouseButtonDown(MouseButton.Left))
         {
             state.SpellState.ShouldAttemptCast = true;
         }
+    }
+
+    private void ReadAimControls(GameState state)
+    {
+        // Cast a ray and find position in XZ plane
+        var ray = Raylib.GetScreenToWorldRay(Raylib.GetMousePosition(), state.Camera.RayCamera);
+        var boundingBox = new BoundingBox
+        {
+            Min = new Vector3(float.MinValue, 0, float.MinValue),
+            Max = new Vector3(float.MaxValue, 0, float.MaxValue),
+        };
+        var collision = Raylib.GetRayCollisionBox(ray, boundingBox);
+        state.SpellState.AimEnabled = collision.Hit;
+        state.SpellState.AimPos = collision.Point;
     }
 }

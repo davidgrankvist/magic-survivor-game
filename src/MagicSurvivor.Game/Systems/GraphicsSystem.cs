@@ -36,6 +36,11 @@ public class GraphicsSystem : ISystem
     {
         DrawGround();
 
+        if (state.SpellState.AimEnabled)
+        {
+            DrawAim(state);
+        }
+
         foreach (var entity in state.Entities)
         {
             if (entity.IsDeleted)
@@ -50,6 +55,11 @@ public class GraphicsSystem : ISystem
     private void DrawGround()
     {
         Raylib.DrawGrid(100, 1.0f);
+    }
+
+    private void DrawAim(GameState state)
+    {
+        Raylib.DrawCube(state.SpellState.AimPos, 1, 1, 1, Color.Red);
     }
 
     private void DrawEntity(GameState state, Entity entity)

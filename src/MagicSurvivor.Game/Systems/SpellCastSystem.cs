@@ -29,7 +29,7 @@ public class SpellCastSystem : ISystem
     {
         var entityDefinition = state.EntityDefinitions.Get(spell.SpawnEntity);
         var playerEntity = state.Entities.GetEntity(state.PlayerEntityHandle)!;
-        var velocity = new Vector3(1, 0, 0) * entityDefinition.Speed;
+        var velocity = Vector3.Normalize(state.SpellState.AimPos - playerEntity.Position) * entityDefinition.Speed;
 
         var entity = new Entity
         {

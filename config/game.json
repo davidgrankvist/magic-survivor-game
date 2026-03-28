@@ -46,6 +46,13 @@
             "SpawnEntity": "Fireball",
             "Cooldown": 0.5,
             "AimLength": 20
+        },
+        {
+            "Name": "Fireball2",
+            "Category": "Projectile",
+            "SpawnEntity": "Fireball",
+            "Cooldown": 1,
+            "AimLength": 20
         }
     ]
 }

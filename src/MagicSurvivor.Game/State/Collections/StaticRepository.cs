@@ -4,6 +4,13 @@ public class StaticRepository<TObject>
 {
     private List<TObject> objects = [];
 
+    public int Count => objects.Count;
+
+    public TObject this[int i]
+    {
+        get => objects[i];
+    }
+
     public TObject Get(StaticHandle handle)
     {
         return objects[handle.Index]!;

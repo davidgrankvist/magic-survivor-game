@@ -134,14 +134,65 @@ public class GraphicsSystem : ISystem
 
     private void DrawUi(GameState state)
     {
+        DrawSpellToolbar(state);
+
         if (state.Editor.IsEnabled)
         {
-            var fontSize = 16;
-            var padding = 5;
-            Raylib.DrawFPS(padding, 0);
-            Raylib.DrawText("Editor commands:", padding, 32, fontSize, Color.Green);
-            Raylib.DrawText("G - Reload game config", padding, 32 + fontSize, fontSize, Color.Green);
-            Raylib.DrawText("L - Reload level", padding, 32 + fontSize * 2, fontSize, Color.Green);
+            DrawEditorUi(state);
+        }
+    }
+
+    private void DrawEditorUi(GameState state)
+    {
+        var fontSize = 16;
+        var padding = 5;
+        Raylib.DrawFPS(padding, 0);
+        Raylib.DrawText("Editor commands:", padding, 32, fontSize, Color.Green);
+        Raylib.DrawText("G - Reload game config", padding, 32 + fontSize, fontSize, Color.Green);
+        Raylib.DrawText("L - Reload level", padding, 32 + fontSize * 2, fontSize, Color.Green);
+    }
+
+    private void DrawSpellToolbar(GameState state)
+    {
+        var center = Raylib.GetScreenCenter();
+        var height = Raylib.GetScreenHeight();
+
+        var toolbarCenter = new Vector2(center.X, center.Y + height / 2f);
+        var itemWidth = 50f;
+        var itemHeight = 50f;
+        var gapX = 10f;
+        var paddingY = 15f;
+        var toolbarStartX = toolbarCenter.X - state.Spells.Count * itemWidth / 2;
+        var itemY = toolbarCenter.Y - itemHeight;
+        var borderColor = Color.Black;
+
+        var fontSize = 16;
+        var fontColor = Color.Black;
+        for (var i = 0; i < state.Spells.Count; i++)
+        {
+            var spell = state.Spells[i];
+            var isSelected = spell.Handle == state.SpellState.SelectedSpell;
+
+            var x = toolbarStartX + i * (itemWidth + gapX);
+            var y = itemY - paddingY;
+
+            Raylib.DrawRectangleLines((int)x, (int)y, (int)itemWidth, (int)itemHeight, borderColor);
+            if (isSelected)
+            {
+                var borderThickness = 5f;
+                var rect = new Rectangle
+                {
+                    Width = itemWidth + borderThickness,
+                    Height = itemHeight + borderThickness,
+                    X = x - borderThickness,
+                    Y = y - borderThickness,
+                };
+                Raylib.DrawRectangleLinesEx(rect, borderThickness, Color.Orange);
+            }
+
+            var textX = x;
+            var textY = y;
+            Raylib.DrawText(spell.Name, (int)textX, (int)textY, fontSize, fontColor);
         }
     }
 }

@@ -73,11 +73,22 @@ public class InputSystem : ISystem
 
     private void ReadSpellControls(GameState state)
     {
+        ReadSpellSelectionControls(state);
         ReadAimControls(state);
+        ReadCastControls(state);
+    }
 
-        if (Raylib.IsMouseButtonDown(MouseButton.Left))
+    private void ReadSpellSelectionControls(GameState state)
+    {
+        for (var i = 0; i < state.Spells.Count; i++)
         {
-            state.SpellState.ShouldAttemptCast = true;
+            var spell = state.Spells[i];
+            var key = KeyboardKey.One + i;
+            if (Raylib.IsKeyPressed(key))
+            {
+                state.SpellState.SelectedSpell = spell.Handle;
+                break;
+            }
         }
     }
 
@@ -93,5 +104,13 @@ public class InputSystem : ISystem
         var collision = Raylib.GetRayCollisionBox(ray, boundingBox);
         state.SpellState.AimEnabled = collision.Hit;
         state.SpellState.AimPos = collision.Point;
+    }
+
+    private void ReadCastControls(GameState state)
+    {
+        if (Raylib.IsMouseButtonDown(MouseButton.Left))
+        {
+            state.SpellState.ShouldAttemptCast = true;
+        }
     }
 }

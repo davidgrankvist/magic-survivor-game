@@ -102,14 +102,20 @@ public class GameConfigLoader
         {
             var sc = spells[i];
 
-            var definitionHandle = new StaticHandle
+            var entityDefinitionHandle = new StaticHandle
             {
                 Index = entityTypeStringToIndexMap[sc.SpawnEntity],
             };
+            var spellHandle = new StaticHandle
+            {
+                Index = i,
+            };
             var spell = new Spell
             {
+                Handle = spellHandle,
+                Name = sc.Name,
                 Category = Enum.Parse<SpelLCategory>(sc.Category),
-                SpawnEntity = definitionHandle,
+                SpawnEntity = entityDefinitionHandle,
                 Cooldown = sc.Cooldown,
                 Elapsed = sc.Cooldown + 1,
                 AimLength = sc.AimLength,

@@ -56,10 +56,12 @@ public class GameConfigLoader
             {
                 Index = entityTypeStringToIndexMap[ec.Type],
             };
+            var def = state.EntityDefinitions.Get(definitionHandle);
             var entity = new Entity
             {
                 DefinitionHandle = definitionHandle,
                 Position = ec.Position,
+                Health = def.Health,
             };
             state.Entities.AddEntity(entity);
         }
@@ -89,6 +91,8 @@ public class GameConfigLoader
                 Category = Enum.Parse<EntityCategory>(edc.Category),
                 Speed = edc.Speed,
                 Collider = edc.Collider,
+                Health = edc.Health,
+                Damage = edc.Damage,
             };
             state.EntityDefinitions.Add(ed);
         }

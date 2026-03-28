@@ -16,6 +16,7 @@ public static class SystemRegistry
             new SpellCastSystem(),
             new MovementSystem(),
             new PhysicsSystem(),
+            new EntityInteractionSystem(),
             new GraphicsSystem(),
         ];
         return systems;

@@ -8,4 +8,6 @@ public class EntityDefinitionConfig
     public string Category = string.Empty;
     public float Speed;
     public Vector3 Collider;
+    public float Health;
+    public float Damage;
 }

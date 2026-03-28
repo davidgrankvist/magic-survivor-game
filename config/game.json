@@ -16,7 +16,8 @@
                 "X": 5,
                 "Y": 5,
                 "Z": 5
-            }
+            },
+            "Health": 100
         },
         {
             "Type": "Zombie",
@@ -26,7 +27,8 @@
                 "X": 5,
                 "Y": 5,
                 "Z": 5
-            }
+            },
+            "Health": 100
         },
         {
             "Type": "Fireball",
@@ -36,7 +38,19 @@
                 "X": 2,
                 "Y": 2,
                 "Z": 2
-            }
+            },
+            "Damage": 20
+        },
+        {
+            "Type": "Fireball2",
+            "Category": "Projectile",
+            "Speed": 40,
+            "Collider": {
+                "X": 2,
+                "Y": 2,
+                "Z": 2
+            },
+            "Damage": 2
         }
     ],
     "Spells": [
@@ -50,8 +64,8 @@
         {
             "Name": "Fireball2",
             "Category": "Projectile",
-            "SpawnEntity": "Fireball",
-            "Cooldown": 1,
+            "SpawnEntity": "Fireball2",
+            "Cooldown": 0.05,
             "AimLength": 20
         }
     ]

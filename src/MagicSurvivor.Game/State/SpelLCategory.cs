@@ -1,7 +1,8 @@
 namespace MagicSurvivor.Game.State;
 
-public enum SpelLCategory
+public enum SpellCategory
 {
     None,
     Projectile,
+    Aoe,
 }

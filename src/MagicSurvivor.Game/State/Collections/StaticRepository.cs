@@ -1,6 +1,8 @@
+using System.Collections;
+
 namespace MagicSurvivor.Game.State.Collections;
 
-public class StaticRepository<TObject>
+public class StaticRepository<TObject> : IEnumerable<TObject>
 {
     private List<TObject> objects = [];
 
@@ -24,5 +26,15 @@ public class StaticRepository<TObject>
     public void Clear()
     {
         objects.Clear();
+    }
+
+    public IEnumerator<TObject> GetEnumerator()
+    {
+        return objects.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

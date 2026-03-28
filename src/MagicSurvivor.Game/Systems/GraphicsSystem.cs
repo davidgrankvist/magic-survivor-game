@@ -42,6 +42,12 @@ public class GraphicsSystem : ISystem
             DrawAim(state);
         }
 
+        if (state.SpellState.AoeIsActive)
+        {
+            var spell = state.Spells.Get(state.SpellState.ActiveAoe);
+            DrawAoe(state, spell, FadeColor(Color.Red, 200));
+        }
+
         foreach (var entity in state.Entities)
         {
             if (entity.IsDeleted)
@@ -63,8 +69,14 @@ public class GraphicsSystem : ISystem
         var spell = state.Spells.Get(state.SpellState.SelectedSpell);
         switch (spell.Category)
         {
-            case SpelLCategory.Projectile:
+            case SpellCategory.Projectile:
                 DrawArrowAim(state, spell);
+                break;
+            case SpellCategory.Aoe:
+                if (!state.SpellState.AoeIsActive)
+                {
+                    DrawAoe(state, spell, FadeColor(Color.Red, 100));
+                }
                 break;
         }
     }
@@ -86,6 +98,23 @@ public class GraphicsSystem : ISystem
         var secondHeadOffset = Raymath.Vector3RotateByAxisAngle(-direction, upAxis, MathF.PI / 4) * arrowHeadLength;
         DrawThickLineXZ(end, end + firstHeadOffset, aimWidth, aimColor);
         DrawThickLineXZ(end, end + secondHeadOffset, aimWidth, aimColor);
+    }
+    
+    private void DrawAoe(GameState state, Spell spell, Color color)
+    {
+        var player = state.Entities.GetEntity(state.PlayerEntityHandle)!;
+        Raylib.DrawCylinderEx(player.Position, player.Position + new Vector3(0, 0.001f, 0), spell.Range, spell.Range, 50, color);
+    }
+
+    private Color FadeColor(Color color, byte alpha)
+    {
+        return new Color
+        {
+            R = color.R,
+            G = color.G,
+            B = color.B,
+            A = alpha,
+        };
     }
 
     private void DrawThickLineXZ(Vector3 start, Vector3 end, float width, Color color)

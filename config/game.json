@@ -62,11 +62,13 @@
             "AimLength": 20
         },
         {
-            "Name": "Fireball2",
-            "Category": "Projectile",
-            "SpawnEntity": "Fireball2",
-            "Cooldown": 0.05,
-            "AimLength": 20
+            "Name": "Storm",
+            "Category": "Aoe",
+            "Cooldown": 10,
+            "Damage": 5,
+            "Range": 20,
+            "Duration": 3,
+            "TickCooldown": 0.5
         }
     ]
 }

@@ -9,23 +9,19 @@ public class GameConfigLoader
         configFileService = new(loadFromSourceDir);
     }
     private readonly GameConfigFileService configFileService;
-    private readonly Dictionary<string, int> entityTypeStringToIndexMap = [];
+    private readonly Dictionary<string, StaticHandle> entityStringToHandle = [];
     private const string PlayerEntityType = "Player";
 
     public void LoadGameConfig(GameState state)
     {
-        entityTypeStringToIndexMap.Clear();
+        entityStringToHandle.Clear();
 
         var gameConfig = configFileService.ReadGameConfig();
         LoadCameraConfig(state.Camera, gameConfig.Camera);
         LoadEntityDefinitions(state, gameConfig.EntityDefinitions);
         LoadSpells(state, gameConfig.Spells);
 
-        state.PlayerEntityDefinitionHandle = new StaticHandle
-        {
-            Index = entityTypeStringToIndexMap[PlayerEntityType],
-        };
-
+        state.PlayerEntityDefinitionHandle = EntityStringToHandle(PlayerEntityType);
         state.SpellState.SelectedSpell = new StaticHandle
         {
             Index = 0,
@@ -41,7 +37,7 @@ public class GameConfigLoader
 
         state.PlayerEntityHandle = new EntityHandle
         {
-            Index = entityTypeStringToIndexMap[PlayerEntityType],
+            Index = EntityStringToHandle(PlayerEntityType).Index,
             Generation = 0,
         };
     }
@@ -52,14 +48,11 @@ public class GameConfigLoader
         for (var i = 0; i < entities.Count; i++)
         {
             var ec = entities[i];
-            var definitionHandle = new StaticHandle
-            {
-                Index = entityTypeStringToIndexMap[ec.Type],
-            };
-            var def = state.EntityDefinitions.Get(definitionHandle);
+            var defHandle = EntityStringToHandle(ec.Type);
+            var def = state.EntityDefinitions.Get(defHandle);
             var entity = new Entity
             {
-                DefinitionHandle = definitionHandle,
+                DefinitionHandle = defHandle,
                 Position = ec.Position,
                 Health = def.Health,
             };
@@ -84,7 +77,10 @@ public class GameConfigLoader
         for (var i = 0; i < entityDefinitionConfigs.Count; i++)
         {
             var edc = entityDefinitionConfigs[i];
-            entityTypeStringToIndexMap[edc.Type] = i;
+            entityStringToHandle[edc.Type] = new StaticHandle
+            {
+                Index = i,
+            };
 
             var ed = new EntityDefinition
             {
@@ -106,10 +102,6 @@ public class GameConfigLoader
         {
             var sc = spells[i];
 
-            var entityDefinitionHandle = new StaticHandle
-            {
-                Index = entityTypeStringToIndexMap[sc.SpawnEntity],
-            };
             var spellHandle = new StaticHandle
             {
                 Index = i,
@@ -118,13 +110,28 @@ public class GameConfigLoader
             {
                 Handle = spellHandle,
                 Name = sc.Name,
-                Category = Enum.Parse<SpelLCategory>(sc.Category),
-                SpawnEntity = entityDefinitionHandle,
+                Category = Enum.Parse<SpellCategory>(sc.Category),
+                SpawnEntity = EntityStringToHandle(sc.SpawnEntity),
                 Cooldown = sc.Cooldown,
                 Elapsed = sc.Cooldown + 1,
                 AimLength = sc.AimLength,
+                Damage = sc.Damage,
+                Range = sc.Range,
+                Duration = sc.Duration,
+                TickCooldown = sc.TickCooldown,
+                TickElapsed = sc.TickCooldown + 1,
             };
             state.Spells.Add(spell);
         }
+    }
+
+    private StaticHandle EntityStringToHandle(string entityType)
+    {
+        if (entityStringToHandle.TryGetValue(entityType, out var handle))
+        {
+            return handle;
+        }
+
+        return StaticHandle.InvalidHandle;
     }
 }

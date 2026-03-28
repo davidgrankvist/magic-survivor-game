@@ -1,11 +1,14 @@
 using Raylib_cs;
 using MagicSurvivor.Game.State;
 using MagicSurvivor.Game.Infrastructure;
+using System.Numerics;
 
 namespace MagicSurvivor.Game.Systems;
 
 public class GraphicsSystem : ISystem
 {
+    private readonly Vector3 upAxis = new Vector3(0, 1, 0);
+
     public void Update(GameState state, float deltaTime)
     {
         // UpdateCameraFollowPlayer(state);
@@ -14,9 +17,7 @@ public class GraphicsSystem : ISystem
         Raylib.ClearBackground(Color.White);
 
         Raylib.BeginMode3D(state.Camera.RayCamera);
-
         DrawScene(state);
-
         Raylib.EndMode3D();
 
         DrawUi(state);
@@ -59,7 +60,50 @@ public class GraphicsSystem : ISystem
 
     private void DrawAim(GameState state)
     {
-        Raylib.DrawCube(state.SpellState.AimPos, 1, 1, 1, Color.Red);
+        var spell = state.Spells.Get(state.SpellState.SelectedSpell);
+        switch (spell.Category)
+        {
+            case SpelLCategory.Projectile:
+                DrawArrowAim(state, spell);
+                break;
+        }
+    }
+
+    private void DrawArrowAim(GameState state, Spell spell)
+    {
+        var playerEntity = state.Entities.GetEntity(state.PlayerEntityHandle)!;
+        var start = playerEntity.Position;
+        var direction = Vector3.Normalize(state.SpellState.AimPos - start);
+        var offset = direction * spell.AimLength;
+        var end = start + offset;
+
+        var aimColor = Color.Red;
+        var aimWidth = 2;
+        DrawThickLineXZ(start, end, aimWidth, aimColor);
+
+        var arrowHeadLength = spell.AimLength * 0.3f;
+        var firstHeadOffset = Raymath.Vector3RotateByAxisAngle(-direction, upAxis, -MathF.PI / 4) * arrowHeadLength;
+        var secondHeadOffset = Raymath.Vector3RotateByAxisAngle(-direction, upAxis, MathF.PI / 4) * arrowHeadLength;
+        DrawThickLineXZ(end, end + firstHeadOffset, aimWidth, aimColor);
+        DrawThickLineXZ(end, end + secondHeadOffset, aimWidth, aimColor);
+    }
+
+    private void DrawThickLineXZ(Vector3 start, Vector3 end, float width, Color color)
+    {
+        var direction = Vector3.Normalize(end - start);
+        var perpDirection = Raymath.Vector3RotateByAxisAngle(direction, upAxis, -MathF.PI / 2);
+        var startLeft = start - perpDirection * width / 2;
+        var startRight = start + perpDirection * width / 2;
+        var endLeft = end - perpDirection * width / 2;
+        var endRight = end + perpDirection * width / 2;
+
+        DrawQuad(startLeft, startRight, endRight, endLeft, color);
+    }
+
+    private void DrawQuad(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Color color)
+    {
+        Raylib.DrawTriangle3D(a, b, c, color);
+        Raylib.DrawTriangle3D(c, d, a, color);
     }
 
     private void DrawEntity(GameState state, Entity entity)

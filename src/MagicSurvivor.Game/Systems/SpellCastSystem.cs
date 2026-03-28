@@ -15,6 +15,7 @@ public class SpellCastSystem : ISystem
         state.SpellState.ShouldAttemptCast = false;
 
         var spell = state.Spells.Get(state.SpellState.SelectedSpell);
+
         if (spell.Elapsed >= spell.Cooldown)
         {
             CastSpawnSpell(state, spell);

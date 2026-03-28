@@ -108,9 +108,11 @@ public class GameConfigLoader
             };
             var spell = new Spell
             {
+                Category = Enum.Parse<SpelLCategory>(sc.Category),
                 SpawnEntity = definitionHandle,
                 Cooldown = sc.Cooldown,
                 Elapsed = sc.Cooldown + 1,
+                AimLength = sc.AimLength,
             };
             state.Spells.Add(spell);
         }

@@ -8,6 +8,7 @@ public class GameConfigLoader
     {
         configFileService = new(loadFromSourceDir);
     }
+
     private readonly GameConfigFileService configFileService;
     private readonly Dictionary<string, StaticHandle> entityStringToHandle = [];
     private const string PlayerEntityType = "Player";
@@ -30,6 +31,7 @@ public class GameConfigLoader
 
     public void LoadLevel(GameState state, string levelId)
     {
+        state.CurrenTime = 0;
         state.Camera.Reset();
 
         var levelConfig = configFileService.ReadLevelConfig(levelId);
@@ -77,18 +79,24 @@ public class GameConfigLoader
         for (var i = 0; i < entityDefinitionConfigs.Count; i++)
         {
             var edc = entityDefinitionConfigs[i];
-            entityStringToHandle[edc.Type] = new StaticHandle
+            var handle = new StaticHandle
             {
                 Index = i,
             };
+            entityStringToHandle[edc.Type] = handle;
 
             var ed = new EntityDefinition
             {
+                Handle = handle,
                 Category = Enum.Parse<EntityCategory>(edc.Category),
                 Speed = edc.Speed,
                 Collider = edc.Collider,
                 Health = edc.Health,
+                AttackType = ParseEnum<EntityAttackType>(edc.AttackType),
                 Damage = edc.Damage,
+                MeleeRange = edc.MeleeRange,
+                StrikeWindup = edc.StrikeWindup,
+                StrikeCooldown = edc.StrikeCooldown,
             };
             state.EntityDefinitions.Add(ed);
         }
@@ -113,13 +121,11 @@ public class GameConfigLoader
                 Category = Enum.Parse<SpellCategory>(sc.Category),
                 SpawnEntity = EntityStringToHandle(sc.SpawnEntity),
                 Cooldown = sc.Cooldown,
-                Elapsed = sc.Cooldown + 1,
                 AimLength = sc.AimLength,
                 Damage = sc.Damage,
                 Range = sc.Range,
                 Duration = sc.Duration,
                 TickCooldown = sc.TickCooldown,
-                TickElapsed = sc.TickCooldown + 1,
             };
             state.Spells.Add(spell);
         }
@@ -133,5 +139,16 @@ public class GameConfigLoader
         }
 
         return StaticHandle.InvalidHandle;
+    }
+
+    private TEnum ParseEnum<TEnum>(string str)
+     where TEnum: struct, Enum
+    {
+        if (Enum.TryParse<TEnum>(str, out var result))
+        {
+            return result;
+        }
+
+        return default;
     }
 }

@@ -11,6 +11,7 @@ internal class Program
         const int fps = 60;
         const float deltaTime = 1.0f / fps;
 #if DEBUG
+        Raylib.SetTraceLogLevel(TraceLogLevel.Debug);
         const bool canEnableEditor = true;
 #else
         const bool canEnableEditor = false;
@@ -36,6 +37,8 @@ internal class Program
             {
                 system.Update(state, deltaTime);
             }
+
+            state.CurrenTime += deltaTime;
         }
 
         Raylib.CloseWindow();

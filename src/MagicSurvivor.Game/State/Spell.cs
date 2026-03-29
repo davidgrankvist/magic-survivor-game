@@ -7,7 +7,7 @@ public class Spell
     public string Name = string.Empty;
     public SpellCategory Category = SpellCategory.None;
     public float Cooldown;
-    public float Elapsed;
+    public float CastBegin;
 
     // Projectile
     public StaticHandle SpawnEntity = StaticHandle.InvalidHandle;
@@ -18,6 +18,6 @@ public class Spell
     public float Range;
     public float Duration;
     public float TickCooldown;
-    public float TickElapsed;
+    public float TickBegin;
     public bool TickActive;
 }

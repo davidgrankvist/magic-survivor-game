@@ -28,7 +28,12 @@
                 "Y": 5,
                 "Z": 5
             },
-            "Health": 100
+            "Health": 100,
+            "AttackType": "Melee",
+            "Damage": 10,
+            "MeleeRange": 3,
+            "StrikeWindup": 0.5,
+            "StrikeCooldown": 1
         },
         {
             "Type": "Fireball",
@@ -40,17 +45,6 @@
                 "Z": 2
             },
             "Damage": 20
-        },
-        {
-            "Type": "Fireball2",
-            "Category": "Projectile",
-            "Speed": 40,
-            "Collider": {
-                "X": 2,
-                "Y": 2,
-                "Z": 2
-            },
-            "Damage": 2
         }
     ],
     "Spells": [

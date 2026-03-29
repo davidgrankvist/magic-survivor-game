@@ -1,6 +1,7 @@
 using System.Numerics;
 using MagicSurvivor.Game.Infrastructure;
 using MagicSurvivor.Game.State;
+using Raylib_cs;
 
 namespace MagicSurvivor.Game.Systems;
 
@@ -8,55 +9,59 @@ public class SpellCastSystem : ISystem
 {
     public void Update(GameState state, float deltaTime)
     {
-        // Make sure that all cooldowns are updated even if the active spell is changed
+        // Reset Aoe ticks and let timer based logic activate them
         foreach (var spell in state.Spells)
         {
-            spell.Elapsed += deltaTime;
-            spell.TickElapsed += deltaTime;
             spell.TickActive = false;
         }
 
         if (state.SpellState.ShouldAttemptCast)
         {
-            CastSelectedSpell(state, deltaTime);
+            CastSelectedSpell(state);
         }
 
         // Assume only one active Aoe
         if (state.SpellState.AoeIsActive)
         {
-            UpdateAoe(state, deltaTime);
+            UpdateAoe(state);
         }
     }
 
-    private void UpdateAoe(GameState state, float deltaTime)
+    private void UpdateAoe(GameState state)
     {
         var spell = state.Spells.Get(state.SpellState.ActiveAoe);
 
         // End Aoe
-        if (spell.Elapsed >= spell.Duration)
+        var spellElapsed = state.CurrenTime - spell.CastBegin;
+        if (spellElapsed >= spell.Duration)
         {
             state.SpellState.ActiveAoe = StaticHandle.InvalidHandle;
             return;
         }
 
         // Update tick
-        if (spell.TickElapsed >= spell.TickCooldown)
+        var tickElapsed = state.CurrenTime - spell.TickBegin;
+        if (tickElapsed >= spell.TickCooldown)
         {
             // Signal to other systems to apply Aoe damage
             spell.TickActive = true;
-            spell.TickElapsed = 0;
+            spell.TickBegin = state.CurrenTime;
+
+            Raylib.TraceLog(TraceLogLevel.Debug, "Aoe tick");
         }
     }
 
-    private void CastSelectedSpell(GameState state, float deltaTime)
+    private void CastSelectedSpell(GameState state)
     {
+        // Consume selection to only cast once
         state.SpellState.ShouldAttemptCast = false;
 
         var spell = state.Spells.Get(state.SpellState.SelectedSpell);
-        if (spell.Elapsed >= spell.Cooldown)
+        var spellElapsed = state.CurrenTime - spell.CastBegin;
+        if (spellElapsed >= spell.Cooldown)
         {
             CastSpell(state, spell);
-            spell.Elapsed = 0;
+            spell.CastBegin = state.CurrenTime;
             return;
         }
     }
@@ -95,7 +100,6 @@ public class SpellCastSystem : ISystem
 
     private void StartAoe(GameState state, Spell spell)
     {
-        spell.TickElapsed = 0;
         state.SpellState.ActiveAoe = spell.Handle;
     }
 }

@@ -25,7 +25,7 @@ public class GraphicsSystem : ISystem
         Raylib.EndDrawing();
     }
 
-    // TODO: follows, but is blurry. add some dead zone mechanism probably?
+    // follows, but is blurry. add some dead zone mechanism probably?
     private void UpdateCameraFollowPlayer(GameState state)
     {
         var entity = state.Entities.GetEntity(state.PlayerEntityHandle)!;

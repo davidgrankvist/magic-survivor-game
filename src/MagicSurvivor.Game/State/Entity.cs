@@ -13,4 +13,8 @@ public class Entity
     public Vector3 Velocity;
 
     public float Health;
+
+    // Npc melee
+    public float StrikeBegin;
+    public bool IsStriking;
 }

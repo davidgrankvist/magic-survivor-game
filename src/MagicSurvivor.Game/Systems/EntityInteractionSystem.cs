@@ -9,7 +9,7 @@ public class EntityInteractionSystem : ISystem
 {
     public void Update(GameState state, float deltaTime)
     {
-        // TODO(optimize): Naive pairwise checks for now. OK for few entities.
+        // Naive pairwise checks for now. OK as long as there are few entities. May need a spatial index later.
         for (var i = 0; i < state.Entities.Count; i++)
         {
             var first = state.Entities[i];
@@ -60,11 +60,51 @@ public class EntityInteractionSystem : ISystem
     {
         if (state.SpellState.AoeIsActive)
         {
-            ApplyAoe(state, first, second);
+            ApplyPlayerAoe(state, first, second);
+        }
+
+        if (secondDef.AttackType == EntityAttackType.Melee)
+        {
+            AttemptNpcMelee(state, first, firstDef, second, secondDef);
         }
     }
 
-    private void ApplyAoe(GameState state, Entity first, Entity second)
+    private void AttemptNpcMelee(GameState state,
+        Entity first, EntityDefinition firstDef,
+        Entity second, EntityDefinition secondDef)
+    {
+        // Begin strike
+        var strikeElapsed = state.CurrenTime - second.StrikeBegin;
+        if (strikeElapsed >= secondDef.StrikeCooldown)
+        {
+            // Begin strike if close
+            var distance = Vector3.Distance(first.Position, second.Position);
+            if (distance <= secondDef.MeleeRange)
+            {
+                second.StrikeBegin = state.CurrenTime;
+                second.IsStriking = true;
+            }
+        }
+
+        // Do strike
+        var strikeWindupElapsed = state.CurrenTime - second.StrikeBegin;
+        if (second.IsStriking && strikeWindupElapsed >= secondDef.StrikeWindup)
+        {
+            // Attempt to hit
+            var distance = Vector3.Distance(first.Position, second.Position);
+            if (distance <= secondDef.MeleeRange)
+            {
+                first.Health -= secondDef.Damage;
+                // TODO: handle player defeated
+            }
+
+            // Back on cooldown
+            second.StrikeBegin = state.CurrenTime;
+            second.IsStriking = false;
+        }
+    }
+
+    private void ApplyPlayerAoe(GameState state, Entity first, Entity second)
     {
         var spell = state.Spells.Get(state.SpellState.ActiveAoe);
         if (!spell.TickActive)

@@ -4,6 +4,11 @@ namespace MagicSurvivor.Game.State;
 
 public class GameState
 {
+    /// <summary>
+    /// Central timestamp to manage cooldowns. This is to avoid things like having "elapsed" counters on individual entities.
+    /// </summary>
+    public float CurrenTime;
+
     public EntityRepository Entities = new();
     public StaticRepository<EntityDefinition> EntityDefinitions = new();
     public StaticRepository<Spell> Spells = new();

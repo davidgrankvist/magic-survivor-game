@@ -1,5 +1,9 @@
 namespace MagicSurvivor.Game.State;
 
+/// <summary>
+/// Refers to an object without using a pointer. This is to enable reloading of settings during runtime
+/// without ending up with invalid references.
+/// </summary>
 public struct StaticHandle
 {
     public int Index;

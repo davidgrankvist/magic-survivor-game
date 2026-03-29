@@ -2,6 +2,11 @@ using System.Collections;
 
 namespace MagicSurvivor.Game.State.Collections;
 
+/// <summary>
+/// A collection of entities that can be accessed with a <see cref="EntityHandle"/>.
+/// Elements are not moved around, but if an element is deleted the slot will be recycled.
+/// This is to handle entity spawning and despawning.
+/// </summary>
 public class EntityRepository : IEnumerable<Entity>
 {
     private List<EntitySlot> slots = [];
@@ -9,11 +14,17 @@ public class EntityRepository : IEnumerable<Entity>
 
     public int Count => slots.Count;
     
+    /// <summary>
+    /// Retrieves an entity by slot index. The slot may be empty if the entity was previously removed.
+    /// </summary>
     public Entity this[int i]
     {
         get => slots[i].Entity;
     }
 
+    /// <summary>
+    /// Retrieves an entity by handle. May return null if the handle does not refer to an active entity.
+    /// </summary>
     public Entity? Get(EntityHandle handle)
     {
         if (handle.Index < 0 || handle.Index >= slots.Count)
@@ -35,6 +46,9 @@ public class EntityRepository : IEnumerable<Entity>
         return slot.Entity;
     }
 
+    /// <summary>
+    /// Adds an entity and sets it <see cref="EntityHandle" />.
+    /// </summary>
     public void Add(Entity entity)
     {
         int targetIndex;
@@ -55,6 +69,9 @@ public class EntityRepository : IEnumerable<Entity>
         slot.Entity = entity;
     }
 
+    /// <summary>
+    /// Frees the entity slot associated with the given handle, if such a slot exists. Soft deletes the entity.
+    /// </summary>
     public void Remove(EntityHandle handle)
     {
         if (handle.Index < 0 || handle.Index >= slots.Count)

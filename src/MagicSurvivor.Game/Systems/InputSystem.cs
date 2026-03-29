@@ -5,6 +5,9 @@ using System.Numerics;
 
 namespace MagicSurvivor.Game.Systems;
 
+/// <summary>
+/// Reads player controls.
+/// </summary>
 public class InputSystem : ISystem
 {
     public void Update(GameState state, float deltaTime)

@@ -1,8 +1,10 @@
-using System.Globalization;
 using MagicSurvivor.Game.State;
 
 namespace MagicSurvivor.Game.Configuration.Services;
 
+/// <summary>
+/// Loads the parsed game or level configuration into the game state.
+/// </summary>
 public class GameConfigLoader
 {
     public GameConfigLoader(bool loadFromSourceDir)

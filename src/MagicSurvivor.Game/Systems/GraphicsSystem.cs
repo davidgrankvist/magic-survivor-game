@@ -5,6 +5,9 @@ using System.Numerics;
 
 namespace MagicSurvivor.Game.Systems;
 
+/// <summary>
+/// Draws the current game state, both entities and UI.
+/// </summary>
 public class GraphicsSystem : ISystem
 {
     public void Update(GameState state, float deltaTime)

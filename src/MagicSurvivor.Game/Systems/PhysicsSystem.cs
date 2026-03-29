@@ -3,6 +3,9 @@ using MagicSurvivor.Game.State;
 
 namespace MagicSurvivor.Game.Systems;
 
+/// <summary>
+/// Updates entity positions.
+/// </summary>
 public class PhysicsSystem : ISystem
 {
     public void Update(GameState state, float deltaTime)

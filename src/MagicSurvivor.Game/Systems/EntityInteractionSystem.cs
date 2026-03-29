@@ -5,6 +5,9 @@ using Raylib_cs;
 
 namespace MagicSurvivor.Game.Systems;
 
+/// <summary>
+/// Checks for entity pairwise interactions such as spells hitting enemies or enemies performing attacks.
+/// </summary>
 public class EntityInteractionSystem : ISystem
 {
     public void Update(GameState state, float deltaTime)

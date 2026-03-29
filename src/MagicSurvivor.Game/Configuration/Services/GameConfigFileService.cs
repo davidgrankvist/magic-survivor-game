@@ -2,6 +2,9 @@ using System.Text.Json;
 
 namespace MagicSurvivor.Game.Configuration.Services;
 
+/// <summary>
+/// Reads configuration files, optionally from the source directory during development.
+/// </summary>
 public class GameConfigFileService
 {
     private readonly bool shouldLoadFromSourceDir;

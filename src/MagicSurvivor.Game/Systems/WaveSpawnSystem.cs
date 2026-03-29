@@ -6,6 +6,9 @@ using Raylib_cs;
 
 namespace MagicSurvivor.Game.Systems;
 
+/// <summary>
+/// Spawns enemies in waves as defined in the level configuration.
+/// </summary>
 public class WaveSpawnSystem : ISystem
 {
     private readonly Random random = new(1234);

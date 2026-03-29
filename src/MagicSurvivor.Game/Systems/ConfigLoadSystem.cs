@@ -4,6 +4,9 @@ using MagicSurvivor.Game.State;
 
 namespace MagicSurvivor.Game.Systems;
 
+/// <summary>
+/// Loads game and level configuration. This enables both level loading and live tweaking of parameters while in editor mode.
+/// </summary>
 public class ConfigLoadSystem : ISystem
 {
     private readonly GameConfigLoader configLoader;

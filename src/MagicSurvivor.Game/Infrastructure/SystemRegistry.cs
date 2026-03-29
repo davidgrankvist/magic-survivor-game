@@ -6,7 +6,7 @@ namespace MagicSurvivor.Game.Infrastructure;
 public static class SystemRegistry
 {
     /// <summary>
-    /// Creates systems in update order.
+    /// Creates the systems to run in an update loop. The systems are in update order.
     /// </summary>
     public static ISystem[] CreateSystems(GameConfigLoader configLoader)
     {

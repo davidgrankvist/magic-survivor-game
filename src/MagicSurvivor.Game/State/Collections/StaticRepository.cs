@@ -2,6 +2,10 @@ using System.Collections;
 
 namespace MagicSurvivor.Game.State.Collections;
 
+/// <summary>
+/// A collection of objects that can be accessed with a <see cref="StaticHandle"/>.
+/// This is for objects that are in a stable index between frames, such as entity or spell definitions.
+/// </summary>
 public class StaticRepository<TObject> : IEnumerable<TObject>
 {
     private List<TObject> objects = [];

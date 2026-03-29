@@ -1,10 +1,12 @@
 using System.Numerics;
 using MagicSurvivor.Game.Infrastructure;
 using MagicSurvivor.Game.State;
-using Raylib_cs;
 
 namespace MagicSurvivor.Game.Systems;
 
+/// <summary>
+/// Manages spell casting and cooldowns.
+/// </summary>
 public class SpellCastSystem : ISystem
 {
     public void Update(GameState state, float deltaTime)

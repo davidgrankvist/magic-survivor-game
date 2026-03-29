@@ -4,6 +4,9 @@ using MagicSurvivor.Game.State;
 
 namespace MagicSurvivor.Game.Systems;
 
+/// <summary>
+/// Updates entity velocities.
+/// </summary>
 public class MovementSystem : ISystem
 {
     public void Update(GameState state, float deltaTime)

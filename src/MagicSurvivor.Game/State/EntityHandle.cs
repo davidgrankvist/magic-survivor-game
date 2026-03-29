@@ -1,5 +1,10 @@
 namespace MagicSurvivor.Game.State;
 
+/// <summary>
+/// Refers to an entity without using a pointer. This is to avoid situations where a an entity is removed
+/// and other entities still hold a reference to it. Uses a generation counter to allow entity slots to be recycled
+/// when entities are removed.
+/// </summary>
 public struct EntityHandle
 {
     public int Index;

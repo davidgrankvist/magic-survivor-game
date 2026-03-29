@@ -46,7 +46,7 @@ public class InputSystem : ISystem
     private void ReadMovementControls(GameState state)
     {
         var entityDefinition = state.EntityDefinitions.Get(state.PlayerEntityDefinitionHandle);
-        var entity = state.Entities.GetEntity(state.PlayerEntityHandle)!;
+        var entity = state.Entities.Get(state.PlayerEntityHandle)!;
         var speed = entityDefinition.Speed;
         var velocity = new Vector3(0, 0, 0);
 

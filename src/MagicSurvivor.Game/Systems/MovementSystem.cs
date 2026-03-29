@@ -8,7 +8,7 @@ public class MovementSystem : ISystem
 {
     public void Update(GameState state, float deltaTime)
     {
-        var playerEntity = state.Entities.GetEntity(state.PlayerEntityHandle)!;
+        var playerEntity = state.Entities.Get(state.PlayerEntityHandle)!;
         var playerEntityDefinition = state.EntityDefinitions.Get(state.PlayerEntityDefinitionHandle);
         var playerPosition = playerEntity.Position;
 

@@ -121,7 +121,7 @@ public class EntityInteractionSystem : ISystem
         second.Health -= spell.Damage;
         if (second.Health <= 0)
         {
-            state.Entities.RemoveEntity(second.Handle);
+            state.Entities.Remove(second.Handle);
         }
     }
 
@@ -146,10 +146,10 @@ public class EntityInteractionSystem : ISystem
         }
 
         first.Health -= secondDef.Damage;
-        state.Entities.RemoveEntity(second.Handle);
+        state.Entities.Remove(second.Handle);
         if (first.Health <= 0)
         {
-            state.Entities.RemoveEntity(first.Handle);
+            state.Entities.Remove(first.Handle);
         }
     }
 }

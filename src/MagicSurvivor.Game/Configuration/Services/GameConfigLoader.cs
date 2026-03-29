@@ -58,7 +58,7 @@ public class GameConfigLoader
                 Position = ec.Position,
                 Health = def.Health,
             };
-            state.Entities.AddEntity(entity);
+            state.Entities.Add(entity);
         }
     }
 

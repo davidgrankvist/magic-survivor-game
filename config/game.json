@@ -31,7 +31,7 @@
             "Health": 100,
             "AttackType": "Melee",
             "Damage": 10,
-            "MeleeRange": 3,
+            "MeleeRange": 5,
             "StrikeWindup": 0.5,
             "StrikeCooldown": 1
         },

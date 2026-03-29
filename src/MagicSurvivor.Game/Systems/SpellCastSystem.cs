@@ -46,8 +46,6 @@ public class SpellCastSystem : ISystem
             // Signal to other systems to apply Aoe damage
             spell.TickActive = true;
             spell.TickBegin = state.CurrenTime;
-
-            Raylib.TraceLog(TraceLogLevel.Debug, "Aoe tick");
         }
     }
 
@@ -86,7 +84,7 @@ public class SpellCastSystem : ISystem
     private void SpawnProjectile(GameState state, Spell spell)
     {
         var entityDefinition = state.EntityDefinitions.Get(spell.SpawnEntity);
-        var playerEntity = state.Entities.GetEntity(state.PlayerEntityHandle)!;
+        var playerEntity = state.Entities.Get(state.PlayerEntityHandle)!;
         var velocity = Vector3.Normalize(state.SpellState.AimPos - playerEntity.Position) * entityDefinition.Speed;
 
         var entity = new Entity
@@ -95,7 +93,7 @@ public class SpellCastSystem : ISystem
             Position = playerEntity.Position,
             Velocity = velocity,
         };
-        state.Entities.AddEntity(entity);
+        state.Entities.Add(entity);
     }
 
     private void StartAoe(GameState state, Spell spell)

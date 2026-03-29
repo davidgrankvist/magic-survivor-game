@@ -28,7 +28,7 @@ public class GraphicsSystem : ISystem
     // follows, but is blurry. add some dead zone mechanism probably?
     private void UpdateCameraFollowPlayer(GameState state)
     {
-        var entity = state.Entities.GetEntity(state.PlayerEntityHandle)!;
+        var entity = state.Entities.Get(state.PlayerEntityHandle)!;
         state.Camera.RayCamera.Target = entity.Position;
         state.Camera.RayCamera.Position = entity.Position + state.Camera.OffsetFromTarget;
     }
@@ -83,7 +83,7 @@ public class GraphicsSystem : ISystem
 
     private void DrawArrowAim(GameState state, Spell spell)
     {
-        var playerEntity = state.Entities.GetEntity(state.PlayerEntityHandle)!;
+        var playerEntity = state.Entities.Get(state.PlayerEntityHandle)!;
         var start = playerEntity.Position;
         var direction = Vector3.Normalize(state.SpellState.AimPos - start);
         var offset = direction * spell.AimLength;
@@ -102,7 +102,7 @@ public class GraphicsSystem : ISystem
     
     private void DrawAoe(GameState state, Spell spell, Color color)
     {
-        var player = state.Entities.GetEntity(state.PlayerEntityHandle)!;
+        var player = state.Entities.Get(state.PlayerEntityHandle)!;
         Raylib.DrawCylinderEx(player.Position, player.Position + new Vector3(0, 0.001f, 0), spell.Range, spell.Range, 50, color);
     }
 
@@ -163,15 +163,49 @@ public class GraphicsSystem : ISystem
 
     private void DrawUi(GameState state)
     {
+        DrawPlayerHealthbar(state);
         DrawSpellToolbar(state);
 
         if (state.Editor.IsEnabled)
         {
-            DrawEditorUi(state);
+            DrawEditorUi();
         }
     }
 
-    private void DrawEditorUi(GameState state)
+    private void DrawPlayerHealthbar(GameState state)
+    {
+        var center = Raylib.GetScreenCenter();
+        var height = Raylib.GetScreenHeight();
+
+        var barWidth = 200f;
+        var barHeight = 30;
+        var borderThickness = 2f;
+        var adjust = 100f; // place above spell toolbar
+        var healthbarCenter = new Vector2(center.X, center.Y + height / 2f - adjust);
+
+        var x = healthbarCenter.X - barWidth / 2;
+        var y = healthbarCenter.Y - barHeight / 2;
+
+        var player = state.Entities.Get(state.PlayerEntityHandle)!;
+        var playerDefinition = state.EntityDefinitions.Get(state.PlayerEntityDefinitionHandle);
+        var healthRemaining = MathF.Max(player.Health, 0) / playerDefinition.Health;
+        var healthWidth = barWidth * healthRemaining;
+
+        // Remaining health
+        Raylib.DrawRectangle((int)x, (int)y, (int)healthWidth, barHeight, Color.Red);
+
+        // Border
+        var rec = new Rectangle
+        {
+            Width = barWidth,
+            Height = barHeight,
+            X = x,
+            Y = y,
+        };
+        Raylib.DrawRectangleLinesEx(rec, borderThickness, Color.Black);
+    }
+
+    private void DrawEditorUi()
     {
         var fontSize = 16;
         var padding = 5;

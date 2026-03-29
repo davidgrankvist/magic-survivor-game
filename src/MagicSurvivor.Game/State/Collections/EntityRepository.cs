@@ -14,7 +14,7 @@ public class EntityRepository : IEnumerable<Entity>
         get => slots[i].Entity;
     }
 
-    public Entity? GetEntity(EntityHandle handle)
+    public Entity? Get(EntityHandle handle)
     {
         if (handle.Index < 0 || handle.Index >= slots.Count)
         {
@@ -35,7 +35,7 @@ public class EntityRepository : IEnumerable<Entity>
         return slot.Entity;
     }
 
-    public void AddEntity(Entity entity)
+    public void Add(Entity entity)
     {
         int targetIndex;
         if (freeIndices.Count == 0)
@@ -55,7 +55,7 @@ public class EntityRepository : IEnumerable<Entity>
         slot.Entity = entity;
     }
 
-    public void RemoveEntity(EntityHandle handle)
+    public void Remove(EntityHandle handle)
     {
         if (handle.Index < 0 || handle.Index >= slots.Count)
         {

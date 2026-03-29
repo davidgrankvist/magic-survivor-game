@@ -31,7 +31,6 @@ public class GameConfigLoader
 
     public void LoadLevel(GameState state, string levelId)
     {
-        state.CurrenTime = 0;
         state.Camera.Reset();
 
         var levelConfig = configFileService.ReadLevelConfig(levelId);

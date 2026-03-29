@@ -72,6 +72,7 @@ public class GameConfigLoader
                 DefinitionHandle = defHandle,
                 Position = ec.Position,
                 Health = def.Health,
+                StrikeBegin = float.MinValue,
             };
             state.Entities.Add(entity);
         }
@@ -166,6 +167,8 @@ public class GameConfigLoader
                 Range = sc.Range,
                 Duration = sc.Duration,
                 TickCooldown = sc.TickCooldown,
+                CastBegin = float.MinValue,
+                TickBegin = float.MinValue,
             };
             state.Spells.Add(spell);
         }

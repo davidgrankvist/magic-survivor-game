@@ -7,22 +7,36 @@
                 "Y": 0,
                 "Z": 0
             }
+        }
+    ],
+    "Waves": [
+        {
+            "Spawns": [
+                {
+                    "Type": "Zombie",
+                    "Count": 2
+                },
+                {
+                    "Type": "Lizard",
+                    "Count": 1
+                }
+            ]
         },
         {
-            "Type": "Zombie",
-            "Position": {
-                "X": 50,
-                "Y": 0,
-                "Z": 0
-            }
+            "Spawns": [
+                {
+                    "Type": "Lizard",
+                    "Count": 5
+                }
+            ]
         },
         {
-            "Type": "Lizard",
-            "Position": {
-                "X": -50,
-                "Y": 0,
-                "Z": 0
-            }
+            "Spawns": [
+                {
+                    "Type": "Zombie",
+                    "Count": 10
+                }
+            ]
         }
     ]
 }

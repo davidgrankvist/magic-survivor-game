@@ -12,9 +12,11 @@ public class GameState
     public EntityRepository Entities = new();
     public StaticRepository<EntityDefinition> EntityDefinitions = new();
     public StaticRepository<Spell> Spells = new();
+    public StaticRepository<Wave> Waves = new();
 
     public GameCamera Camera = new();
     public EditorState Editor = new();
+    public WaveSettings WaveSettings = new();
     public LevelState Level = new();
     public SpellState SpellState = new();
 

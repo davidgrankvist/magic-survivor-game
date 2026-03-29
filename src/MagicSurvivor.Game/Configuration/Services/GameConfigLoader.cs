@@ -1,3 +1,4 @@
+using System.Globalization;
 using MagicSurvivor.Game.State;
 
 namespace MagicSurvivor.Game.Configuration.Services;
@@ -19,6 +20,7 @@ public class GameConfigLoader
 
         var gameConfig = configFileService.ReadGameConfig();
         LoadCameraConfig(state.Camera, gameConfig.Camera);
+        LoadWaveConfig(state, gameConfig.WaveSettings);
         LoadEntityDefinitions(state, gameConfig.EntityDefinitions);
         LoadSpells(state, gameConfig.Spells);
 
@@ -35,12 +37,26 @@ public class GameConfigLoader
 
         var levelConfig = configFileService.ReadLevelConfig(levelId);
         LoadEntitites(state, levelConfig.Entities);
+        LoadWaves(state, levelConfig.Waves);
 
+        // Convenience accessor
         state.PlayerEntityHandle = new EntityHandle
         {
             Index = EntityStringToHandle(PlayerEntityType).Index,
             Generation = 0,
         };
+
+        // Start at first wave
+        state.Level.CurrentWave = new StaticHandle
+        {
+            Index = 0,
+        };
+        state.Level.ShouldSpawnWave = true;
+    }
+
+    private void LoadWaveConfig(GameState state, WaveSettingsConfig waveSettings)
+    {
+        state.WaveSettings.EnemySpawnDistance = waveSettings.EnemySpawnDistance;
     }
 
     private void LoadEntitites(GameState state, List<EntityConfig> entities)
@@ -58,6 +74,31 @@ public class GameConfigLoader
                 Health = def.Health,
             };
             state.Entities.Add(entity);
+        }
+    }
+
+    private void LoadWaves(GameState state, List<WaveConfig> waves)
+    {
+        state.Waves.Clear();
+        for (var i = 0; i < waves.Count; i++)
+        {
+            var wc = waves[i];
+            var wave = new Wave();
+
+            for (var j = 0; j < wc.Spawns.Count; j++)
+            {
+                var sc = wc.Spawns[j];
+                var defHandle = EntityStringToHandle(sc.Type);
+                var spawn = new EntitySpawnSettings
+                {
+                    Handle = defHandle,
+                    Count = sc.Count,
+                };
+
+                wave.Spawns.Add(spawn);
+            }
+
+            state.Waves.Add(wave);
         }
     }
 
@@ -141,7 +182,7 @@ public class GameConfigLoader
     }
 
     private TEnum ParseEnum<TEnum>(string str)
-     where TEnum: struct, Enum
+     where TEnum : struct, Enum
     {
         if (Enum.TryParse<TEnum>(str, out var result))
         {

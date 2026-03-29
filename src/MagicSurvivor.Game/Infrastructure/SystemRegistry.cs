@@ -12,6 +12,7 @@ public static class SystemRegistry
     {
         ISystem[] systems = [
             new ConfigLoadSystem(configLoader),
+            new WaveSpawnSystem(),
             new InputSystem(),
             new SpellCastSystem(),
             new MovementSystem(),

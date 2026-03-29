@@ -7,8 +7,6 @@ namespace MagicSurvivor.Game.Systems;
 
 public class GraphicsSystem : ISystem
 {
-    private readonly Vector3 upAxis = new Vector3(0, 1, 0);
-
     public void Update(GameState state, float deltaTime)
     {
         // UpdateCameraFollowPlayer(state);
@@ -94,8 +92,8 @@ public class GraphicsSystem : ISystem
         DrawThickLineXZ(start, end, aimWidth, aimColor);
 
         var arrowHeadLength = spell.AimLength * 0.3f;
-        var firstHeadOffset = Raymath.Vector3RotateByAxisAngle(-direction, upAxis, -MathF.PI / 4) * arrowHeadLength;
-        var secondHeadOffset = Raymath.Vector3RotateByAxisAngle(-direction, upAxis, MathF.PI / 4) * arrowHeadLength;
+        var firstHeadOffset = Raymath.Vector3RotateByAxisAngle(-direction, GameConstants.UpAxis, -MathF.PI / 4) * arrowHeadLength;
+        var secondHeadOffset = Raymath.Vector3RotateByAxisAngle(-direction, GameConstants.UpAxis, MathF.PI / 4) * arrowHeadLength;
         DrawThickLineXZ(end, end + firstHeadOffset, aimWidth, aimColor);
         DrawThickLineXZ(end, end + secondHeadOffset, aimWidth, aimColor);
     }
@@ -120,7 +118,7 @@ public class GraphicsSystem : ISystem
     private void DrawThickLineXZ(Vector3 start, Vector3 end, float width, Color color)
     {
         var direction = Vector3.Normalize(end - start);
-        var perpDirection = Raymath.Vector3RotateByAxisAngle(direction, upAxis, -MathF.PI / 2);
+        var perpDirection = Raymath.Vector3RotateByAxisAngle(direction, GameConstants.UpAxis, -MathF.PI / 2);
         var startLeft = start - perpDirection * width / 2;
         var startRight = start + perpDirection * width / 2;
         var endLeft = end - perpDirection * width / 2;

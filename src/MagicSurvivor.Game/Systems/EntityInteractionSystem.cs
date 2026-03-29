@@ -121,7 +121,7 @@ public class EntityInteractionSystem : ISystem
         second.Health -= spell.Damage;
         if (second.Health <= 0)
         {
-            state.Entities.Remove(second.Handle);
+            HandleEnemyDead(state, second.Handle);
         }
     }
 
@@ -149,7 +149,28 @@ public class EntityInteractionSystem : ISystem
         state.Entities.Remove(second.Handle);
         if (first.Health <= 0)
         {
-            state.Entities.Remove(first.Handle);
+            HandleEnemyDead(state, first.Handle);
         }
+    }
+
+    private void HandleEnemyDead(GameState state, EntityHandle handle)
+    {
+        state.Entities.Remove(handle);
+        state.Level.EnemyCount--;
+        if (state.Level.EnemyCount > 0)
+        {
+            return;
+
+        }
+
+        var isFinalWave = state.Level.CurrentWave.Index == state.Waves.Count - 1;
+        if (!isFinalWave)
+        {
+            // Signal to wave spawn system to load the next wave
+            state.Level.CurrentWave.Index++;
+            state.Level.ShouldSpawnWave = true;
+        }
+
+        // Do nothing for now if it was the final wave.
     }
 }
